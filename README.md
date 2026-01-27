@@ -7,14 +7,19 @@ sayesinde bellek kullanımını düşük tutar.
 ## Kullanım
 
 ```
+dotnet restore ConceptWaveLint/ConceptWaveLint.csproj
 dotnet run --project ConceptWaveLint -- <input.xml> [lint-config.json]
 ```
 
 Örnek:
 
 ```
+dotnet restore ConceptWaveLint/ConceptWaveLint.csproj
 dotnet run --project ConceptWaveLint -- metadata.xml lint-config.json
 ```
+
+Restore işlemi `project.assets.json` dosyasını üretir. Build hatası alırsanız önce
+`dotnet restore` çalıştırın veya Visual Studio'da **Restore NuGet Packages** kullanın.
 
 ## ESLint entegrasyonu
 
