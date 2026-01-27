@@ -25,7 +25,7 @@ internal static class Program
         }
 
         var lintSettings = LintSettings.Load(configPath);
-        ILintRunner lintRunner = EslintRunner.TryCreate(lintSettings) ?? new BasicLintRunner(lintSettings);
+        ILintRunner lintRunner = EslintRunner.TryCreate(lintSettings) ?? (ILintRunner)new BasicLintRunner(lintSettings);
 
         var issues = new List<LintIssue>();
         foreach (var script in XmlScriptExtractor.ReadScripts(inputPath))
