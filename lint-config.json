@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "eqeqeqEnabled": true,
+    "noUndefEnabled": true,
+    "noUnusedVarsEnabled": false
+  }
+}
