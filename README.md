@@ -11,6 +11,8 @@ dotnet restore ConceptWaveLint/ConceptWaveLint.csproj
 dotnet run --project ConceptWaveLint -- <input.xml> [lint-config.json]
 ```
 
+Komut satırında XML yolu verilmezse uygulama sizden dosya yolunu ister.
+
 Örnek:
 
 ```

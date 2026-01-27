@@ -10,13 +10,13 @@ internal static class Program
 {
     private static int Main(string[] args)
     {
-        if (args.Length < 1)
+        var inputPath = args.Length > 0 ? args[0] : PromptForXmlPath();
+        if (string.IsNullOrWhiteSpace(inputPath))
         {
             Console.WriteLine("Usage: ConceptWaveLint <input.xml> [lint-config.json]");
             return 1;
         }
 
-        var inputPath = args[0];
         var configPath = args.Length > 1 ? args[1] : "lint-config.json";
         if (!File.Exists(inputPath))
         {
@@ -49,6 +49,12 @@ internal static class Program
         }));
 
         return 0;
+    }
+
+    private static string PromptForXmlPath()
+    {
+        Console.Write("XML dosya yolunu girin: ");
+        return Console.ReadLine() ?? string.Empty;
     }
 }
 
