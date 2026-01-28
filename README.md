@@ -12,6 +12,8 @@ dotnet run --project ConceptWaveLint -- <input.xml> [lint-config.json]
 ```
 
 Komut satırında XML yolu verilmezse uygulama sizden dosya yolunu ister.
+Çıktı JSON olarak konsola yazılır ve ayrıca uygulama klasörüne zaman damgalı
+`cwlint_YYYYMMDD_HHMMSS.log` dosyası oluşturulur.
 
 Örnek:
 

@@ -43,10 +43,15 @@ internal static class Program
             }
         }
 
-        Console.WriteLine(JsonSerializer.Serialize(issues, new JsonSerializerOptions
+        var outputJson = JsonSerializer.Serialize(issues, new JsonSerializerOptions
         {
             WriteIndented = true
-        }));
+        });
+        Console.WriteLine(outputJson);
+
+        var logPath = Path.Combine(AppContext.BaseDirectory, $"cwlint_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+        File.WriteAllText(logPath, outputJson, Encoding.UTF8);
+        Console.WriteLine($"Log dosyası yazıldı: {logPath}");
 
         return 0;
     }
