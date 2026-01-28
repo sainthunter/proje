@@ -124,8 +124,13 @@ internal static class XmlScriptExtractor
                         scriptLine = scriptLineInfo.LineNumber;
                         scriptPos = scriptLineInfo.LinePosition;
                     }
+                    // eskisi:
+                    // var raw = subtree.ReadElementContentAsString();
 
-                    var raw = subtree.ReadElementContentAsString();
+                    // önerilen:
+                    var raw = subtree.ReadInnerXml(); // element içeriğini markup ile birlikte döner
+                    scriptBody = WebUtility.HtmlDecode(raw);
+                    //var raw = subtree.ReadElementContentAsString();
                     scriptBody = WebUtility.HtmlDecode(raw);
                 }
             }
