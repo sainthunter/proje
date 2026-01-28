@@ -124,8 +124,13 @@ internal static class XmlScriptExtractor
                         scriptLine = scriptLineInfo.LineNumber;
                         scriptPos = scriptLineInfo.LinePosition;
                     }
+                    // eskisi:
+                    // var raw = subtree.ReadElementContentAsString();
 
-                    var raw = subtree.ReadInnerXml();
+                    // önerilen:
+                    var raw = subtree.ReadInnerXml(); // element içeriğini markup ile birlikte döner
+                    scriptBody = WebUtility.HtmlDecode(raw);
+                    //var raw = subtree.ReadElementContentAsString();
                     scriptBody = WebUtility.HtmlDecode(raw);
                 }
             }
@@ -160,27 +165,20 @@ internal sealed class BasicLintRunner : ILintRunner
     public IReadOnlyList<LintIssue> Analyze(string script, string scriptName)
     {
         var issues = new List<LintIssue>();
-        if (_settings.Rules.NoCondAssignEnabled)
+        if (_settings.Rules.EqeqeqEnabled)
         {
             var lines = script.Split('\n');
             for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
-                if (!line.Contains("if", StringComparison.OrdinalIgnoreCase) &&
-                    !line.Contains("case", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                var match = System.Text.RegularExpressions.Regex.Match(line, @"(?<![=!<>])=(?![=])");
-                if (match.Success)
+                if (line.Contains("==") && !line.Contains("==="))
                 {
                     issues.Add(new LintIssue(
                         scriptName,
-                        "no-cond-assign",
-                        "Avoid assignment in if/case conditions; use comparison instead.",
+                        "eqeqeq",
+                        "Use '===' instead of '=='.",
                         i + 1,
-                        match.Index + 1,
+                        line.IndexOf("==", StringComparison.Ordinal) + 1,
                         0,
                         0,
                         0));
@@ -284,15 +282,9 @@ internal sealed class EslintRunner : ILintRunner
         {
             foreach (var message in file.GetProperty("messages").EnumerateArray())
             {
-                var ruleId = message.GetProperty("ruleId").GetString() ?? "unknown";
-                if (ruleId.Equals("eqeqeq", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
                 issues.Add(new LintIssue(
                     string.Empty,
-                    ruleId,
+                    message.GetProperty("ruleId").GetString() ?? "unknown",
                     message.GetProperty("message").GetString() ?? string.Empty,
                     message.GetProperty("line").GetInt32(),
                     message.GetProperty("column").GetInt32(),
@@ -337,8 +329,7 @@ internal sealed class LintSettings
             },
             ["rules"] = new Dictionary<string, object?>
             {
-                ["eqeqeq"] = "off",
-                ["no-cond-assign"] = Rules.NoCondAssignEnabled ? "error" : "off",
+                ["eqeqeq"] = Rules.EqeqeqEnabled ? "error" : "off",
                 ["no-undef"] = Rules.NoUndefEnabled ? "error" : "off",
                 ["no-unused-vars"] = Rules.NoUnusedVarsEnabled ? "warn" : "off"
             }
@@ -348,7 +339,7 @@ internal sealed class LintSettings
 
 internal sealed class LintRuleSettings
 {
-    public bool NoCondAssignEnabled { get; init; } = true;
+    public bool EqeqeqEnabled { get; init; } = true;
     public bool NoUndefEnabled { get; init; } = true;
     public bool NoUnusedVarsEnabled { get; init; } = false;
 }

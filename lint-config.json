@@ -1,6 +1,6 @@
 {
   "rules": {
-    "noCondAssignEnabled": true,
+    "eqeqeqEnabled": true,
     "noUndefEnabled": true,
     "noUnusedVarsEnabled": false
   }
