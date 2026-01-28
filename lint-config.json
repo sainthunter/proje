@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "noCondAssignEnabled": true,
+    "noUndefEnabled": true,
+    "noUnusedVarsEnabled": false
+  }
+}
